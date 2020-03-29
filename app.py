@@ -29,5 +29,10 @@ def oxford(word):
     return "We will back soon..."  # OX.getRequest(word)
 
 
+@app.errorhandler(404)
+def notFount(e):
+    return "We will come back soon..."
+
+
 if __name__ == "__main__":
     app.run(debug=True)
