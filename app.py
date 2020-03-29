@@ -1,5 +1,6 @@
 import config
 from os import getenv
+from flask_cors import CORS
 from flask import Flask
 from utils.oxford import Oxford
 from utils.merriamWebster import MerriamWebster
@@ -10,6 +11,7 @@ MW = MerriamWebster(getenv('MWL_API_KEY'), getenv('MWD_API_KEY'))
 OX = Oxford(getenv('OX_APP_ID'), getenv('OX_APP_KEY'))
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 @app.route('/api/mw/<word>')
