@@ -19,9 +19,9 @@ class MerriamWebster:
 
     def getRequest(self, word):
         rLearner = get(self.createLearnersUrl(word=word))
-        rDictionary = get(self.createDictionaryUrl(word=word))
+        # rDictionary = get(self.createDictionaryUrl(word=word))
 
         return {
             'MWL': rLearner.json(),
-            'MWD': rDictionary.json()
+            # 'MWD': rDictionary.json()
         }

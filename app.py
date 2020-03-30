@@ -31,7 +31,8 @@ def googleDictionary(word):
 
 @app.route('/api/ox/<word>')
 def oxford(word):
-    return "We will back soon..."  # OX.getRequest(word)
+    # return "We will back soon..."
+    return OX.getRequest(word)
 
 
 @app.route('/api/trans/<destLanguage>/<word>')

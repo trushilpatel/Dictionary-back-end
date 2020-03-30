@@ -18,5 +18,8 @@ class Oxford:
                                                     'app_key': self.app_key
                                                     }
                 )
-        # print("code {}\n".format(r.status_code))
+        file = open("apiResponse/ox/" + word + ".json", 'wt')
+        file.write(json.dumps(r.json()))
+        file.close()
         return r.json()
+
