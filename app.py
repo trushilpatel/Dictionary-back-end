@@ -1,16 +1,18 @@
 import config
 from os import getenv
 from flask_cors import CORS
-from flask import Flask
+from flask import Flask, request
 from utils.oxford import Oxford
 from utils.merriamWebster import MerriamWebster
 from utils.google import GoogleDictionary
 from utils.translate import Translate
+from utils.mongoDB import DataBaseUtility
 
 # commonly used objects
+MOD = DataBaseUtility(atlas_link=getenv("ATLAS_LINK"), databaseName=getenv("DATABASE_NAME"))
 GD = GoogleDictionary()
-MW = MerriamWebster(getenv('MWL_API_KEY'), getenv('MWD_API_KEY'))
-OX = Oxford(getenv('OX_APP_ID'), getenv('OX_APP_KEY'))
+MW = MerriamWebster(mwl_api_key=getenv('MWL_API_KEY'), mwd_api_key=getenv('MWD_API_KEY'))
+OX = Oxford(app_id=getenv('OX_APP_ID'), app_key=getenv('OX_APP_KEY'))
 TRA = Translate()
 
 # app configuration
@@ -19,6 +21,11 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 # routes
+@app.route('/login', methods=["POST"])
+def login():
+    return MOD.login(request.json['username'], request.json['password'])
+
+
 @app.route('/api/mw/<word>')
 def merriamWebster(word):
     return MW.getRequest(word)
