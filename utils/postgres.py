@@ -89,6 +89,8 @@ class PostGress:
         self.insertWord(word=word, username=username, tableName='favourite_words')
     def insertHistoryWord(self, word, username):
         self.insertWord(word=word, username=username, tableName='history_words')
+    def insertHomeWords(self, username):
+        return self.getWords(username=username, tableName='home_words')
 
     # get favourite and history words
     def getWords(self, username, tableName):
@@ -103,6 +105,8 @@ class PostGress:
         return self.getWords(username=username, tableName='history_words')
     def getFavouriteWords(self, username):
         return self.getWords(username=username, tableName='favourite_words')
+    def getHomeWords(self, username):
+        return self.getWords(username=username, tableName='home_words')
 
     # delete favourite and History Words
     def deleteWords(self, word, username, tableName):
@@ -117,6 +121,8 @@ class PostGress:
         return self.deleteWords(word=word, username=username, tableName='history_words')
     def deleteFavouriteWords(self, word, username):
         return self.deleteWords(word=word, username=username, tableName='favourite_words')
+    def deleteHomeWords(self, username):
+        return self.getWords(username=username, tableName='home_words')
 
 
 if __name__ == "__main__":

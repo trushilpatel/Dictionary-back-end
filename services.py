@@ -30,16 +30,32 @@ OX = Oxford(
 TRA = Translate()
 
 
-# translation
+# ------------------- AUTHENTICATION ----------------------------
+def authenticated():
+    try:
+        username = request.headers['username']
+        password = request.headers['password']
+        return PG.login(username, password)
+    except:
+        return {
+            'error': "Login error check your username and password"
+        }
+
+
+# ------------------- TRANSLATOR ----------------------------
 def translateWordWithDest(destLanguage, word):
     return TRA.translate(destLanguage=destLanguage, word=word)
+
+
 def translateWord(word):
     return TRA.translate(word=word)
 
 
-# dictionary
+# ------------------- DICTIONARY ----------------------------
 def googleDictionary(word):
     return GD.getRequest(word)
+
+
 def merriamWebster(word):
     definition = None
     wordDefinition = PG.getWordFromMWLDictionary(word)
@@ -53,6 +69,8 @@ def merriamWebster(word):
         except:
             print("error in merriamWebster")
     return definition
+
+
 def oxford(word):
     definition = None
     wordDefinition = PG.getWordFromOxfordDictionary(word)
@@ -66,24 +84,9 @@ def oxford(word):
         except:
             print("error in oxford")
     return definition
-def authenticated():
-    try:
-        username = request.headers['username']
-        password = request.headers['password']
-        return PG.login(username, password)
-    except:
-        return {
-            'error': "Login error check your username and password"
-        }
 
 
-# add word to favourite and history
-def addFavouriteWord(word):
-    PG.insertFavouriteWord(
-        word=word,
-        username=request.headers['username']
-    )
-    return {"status": "successful"}
+# ------------------- HISTORY ----------------------------
 def addHistoryWord(word):
     PG.insertHistoryWord(
         word=word,
@@ -91,23 +94,53 @@ def addHistoryWord(word):
     )
     return {"status": "successful"}
 
-# get words from favourite and history
+
 def getHistoryWords():
     return {
         'rows': PG.getHistoryWords(username=request.headers['username'])
     }
+
+
+def deleteHistoryWord(word):
+    PG.deleteHistoryWords(username=request.headers['username'], word=word)
+    return {"status": "successful"}
+
+
+# ------------------- FAVOURITE ----------------------------
+def addFavouriteWord(word):
+    PG.insertFavouriteWord(
+        word=word,
+        username=request.headers['username']
+    )
+    return {"status": "successful"}
+
+
 def getFavouriteWords():
     return {
         'rows': PG.getFavouriteWords(username=request.headers['username'])
     }
 
 
-# delete words from favourite and history
 def deleteFavouriteWord(word):
     PG.deleteFavouriteWords(username=request.headers['username'], word=word)
     return {"status": "successful"}
 
 
-def deleteHistoryWord(word):
-    PG.deleteHistoryWords(username=request.headers['username'], word=word)
+# ------------------- HOME ----------------------------
+def addHomeWord(word):
+    PG.insertHomeWord(
+        word=word,
+        username=request.headers['username']
+    )
+    return {"status": "successful"}
+
+
+def getHomeWords():
+    return {
+        'rows': PG.getHomeWords(username=request.headers['username'])
+    }
+
+
+def deleteHomeWord(word):
+    PG.deleteHoemWords(username=request.headers['username'], word=word)
     return {"status": "successful"}
