@@ -145,7 +145,7 @@ class PostGress:
             execute = self.cur.execute("""select word from {} where user_id = %s and word = %s""".format(tableName),
                                        (str(self.getUserId(username)), word)
                                        )
-            return self.conn.fetchall()
+            return self.cur.fetchall()
         except:
             pass
 
