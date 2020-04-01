@@ -18,8 +18,5 @@ class Oxford:
                                                     'app_key': self.app_key
                                                     }
                 )
-        file = open("apiResponse/ox/" + word + ".json", 'wt')
-        file.write(json.dumps(r.json()))
-        file.close()
         return r.json()
 

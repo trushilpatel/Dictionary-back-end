@@ -1,60 +1,76 @@
-import config
-from os import getenv
 from flask_cors import CORS
-from flask import Flask, request
-from utils.oxford import Oxford
-from utils.merriamWebster import MerriamWebster
-from utils.google import GoogleDictionary
-from utils.translate import Translate
-from utils.mongoDB import DataBaseUtility
+from flask import Flask
+import services as SE
 
-# commonly used objects
-MOD = DataBaseUtility(atlas_link=getenv("ATLAS_LINK"), databaseName=getenv("DATABASE_NAME"))
-GD = GoogleDictionary()
-MW = MerriamWebster(mwl_api_key=getenv('MWL_API_KEY'), mwd_api_key=getenv('MWD_API_KEY'))
-OX = Oxford(app_id=getenv('OX_APP_ID'), app_key=getenv('OX_APP_KEY'))
-TRA = Translate()
-
-# app configuration
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
-# routes
-@app.route('/login', methods=["POST"])
+@app.route('/api/login')
 def login():
-    return MOD.login(request.json['username'], request.json['password'])
+    print('hello')
+    return SE.authenticated()
 
 
 @app.route('/api/mw/<word>')
 def merriamWebster(word):
-    return MW.getRequest(word)
+    return SE.merriamWebster(word=word)
 
 
 @app.route('/api/gd/<word>')
 def googleDictionary(word):
-    return GD.getRequest(word)
+    return SE.googleDictionary(word=word)
 
 
 @app.route('/api/ox/<word>')
 def oxford(word):
-    # return "We will back soon..."
-    return OX.getRequest(word)
+    return SE.oxford(word=word)
 
 
 @app.route('/api/trans/<destLanguage>/<word>')
 def translateWordWithDest(destLanguage, word):
-    return TRA.translate(destLanguage=destLanguage, word=word)
+    return SE.translateWordWithDest(destLanguage=destLanguage, word=word)
 
 
 @app.route('/api/trans/<word>')
 def translateWord(word):
-    return TRA.translate(word=word)
+    return SE.translateWord(word=word)
+
+
+@app.route('/api/add/favourite/<word>')
+def addFavouriteWord(word):
+    SE.addFavouriteWord(word=word)
+
+
+@app.route('/api/add/history/<word>')
+def addHistoryWord(word):
+    SE.addHistoryWord(word=word)
+
+
+@app.route('/api/delete/favourite/<word>')
+def deleteFavouriteWord(word):
+    SE.deleteFavouriteWord(word=word)
+
+
+@app.route('/api/delete/history/<word>')
+def deleteHistoryWord(word):
+    SE.deleteHistoryWord(word=word)
+
+
+@app.route('/api/get/history_words')
+def getHistoryWords():
+    return SE.getHistoryWords()
+
+
+@app.route('/api/get/favourite_words')
+def getFavouriteWords():
+    return SE.getFavouriteWords()
 
 
 @app.errorhandler(404)
-def notFount(e):
-    return "We will come back soon..."
+def notFount(error):
+    return error
+    # return "We will come back soon..."
 
 
 if __name__ == "__main__":
