@@ -18,10 +18,6 @@ PG = PostGress(
     password=getenv('PG_PASSWORD')
 )
 GD = GoogleDictionary()
-MW = MerriamWebster(
-    mwl_api_key=getenv('MWL_API_KEY'),
-    mwd_api_key=getenv('MWD_API_KEY')
-)
 OX = Oxford(
     app_id=getenv('OX_APP_ID'),
     app_key=getenv('OX_APP_KEY')
@@ -43,12 +39,19 @@ def authenticated():
 
 # ------------------- TRANSLATOR ----------------------------
 def translateWordWithDest(destLanguage, word):
-    return TRA.translate(destLanguage=destLanguage, word=word)
+    return {
+        'translation': TRA.translate(destLanguage=destLanguage, word=word),
+        'home': PG.isHomeWord(word=word, username=request.headers['username']),
+        'favourite': PG.isFavouriteWord(word=word, username=request.headers['username'])
+    }
 
 
 def translateWord(word):
-    return TRA.translate(word=word)
-
+    return {
+            'translation':TRA.translate(word=word),
+            'home': PG.isHomeWord(word=word, username=request.headers['username']),
+            'favourite': PG.isFavouriteWord(word=word, username=request.headers['username'])
+        }
 
 # ------------------- DICTIONARY ----------------------------
 def googleDictionary(word):
@@ -143,3 +146,4 @@ def getHomeWords():
 def deleteHomeWord(word):
     PG.deleteHomeWord(username=request.headers['username'], word=word)
     return {"status": "successful"}
+

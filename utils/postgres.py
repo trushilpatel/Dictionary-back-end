@@ -15,6 +15,7 @@ class PostGress:
         finally:
             self.cur = self.conn.cursor()
             print("connected to Database...")
+
     def __del__(self):
         self.conn.close()
 
@@ -30,12 +31,14 @@ class PostGress:
         create table history_words(user_id int Not Null, word varchar Unique Not null, foreign key(user_id)'
         references users(id));'
         """
+
     def login(self, username, password):
         execute = self.cur.execute("""select id from users where users.username = %s and users.password = %s""",
                                    (username, password))
         return {
             'userexist': bool(len(self.cur.fetchall()))
         }
+
     def getUserId(self, username):
         execute = self.cur.execute("""select id from users where users.username = %s""", (username,))
         return self.cur.fetchall()[0][0]
@@ -44,11 +47,13 @@ class PostGress:
     def checkWordExistInDictionary(self, word, dictionary):
         execute = self.cur.execute("""select * from {} where word = %s""".format(dictionary), (word,))
         return self.cur.fetchall()
+
     def getWordFromOxfordDictionary(self, word):
         word = self.checkWordExistInDictionary(word=word, dictionary='oxford_words')
         if len(word) == 0:
             return False
         return word[0][1]
+
     def getWordFromMWLDictionary(self, word):
         word = self.checkWordExistInDictionary(word=word, dictionary='mwl_words')
         if len(word) == 0:
@@ -64,12 +69,14 @@ class PostGress:
             self.conn.commit()
         except:
             pass
+
     def insertWordInMWLDictionary(self, word, wordDefinition):
         self.insertWordInDictionary(
             word=word,
             word_definition=wordDefinition,
             dictionary='mwl_words'
         )
+
     def insertWordInOxfordDictionary(self, word, wordDefinition):
         self.insertWordInDictionary(
             word=word,
@@ -85,10 +92,13 @@ class PostGress:
             self.conn.commit()
         except:
             pass
+
     def insertFavouriteWord(self, word, username):
         self.insertWord(word=word, username=username, tableName='favourite_words')
+
     def insertHistoryWord(self, word, username):
         self.insertWord(word=word, username=username, tableName='history_words')
+
     def insertHomeWord(self, word, username):
         return self.insertWord(word=word, username=username, tableName='home_words')
 
@@ -101,10 +111,13 @@ class PostGress:
             return self.cur.fetchall()
         except:
             pass
+
     def getHistoryWords(self, username):
         return self.getWords(username=username, tableName='history_words')
+
     def getFavouriteWords(self, username):
         return self.getWords(username=username, tableName='favourite_words')
+
     def getHomeWords(self, username):
         return self.getWords(username=username, tableName='home_words')
 
@@ -117,15 +130,33 @@ class PostGress:
             self.conn.commit()
         except:
             pass
+
     def deleteHistoryWord(self, word, username):
         return self.deleteWord(word=word, username=username, tableName='history_words')
+
     def deleteFavouriteWord(self, word, username):
         return self.deleteWord(word=word, username=username, tableName='favourite_words')
-    def deleteHomeWord(self,word, username):
-        return self.deleteWord(word=word,username=username, tableName='home_words')
 
+    def deleteHomeWord(self, word, username):
+        return self.deleteWord(word=word, username=username, tableName='home_words')
 
-if __name__ == "__main__":
-    pg = PostGress("localhost", '5432', 'dictionary', 'postgres', '1234')
-    file = open(r'D:\MY\GIT\Dictionary\Heroku\Dictionary-back-end\apiResponse\trushil\ox\miserable.json', 'r')
-    print(pg.deleteHistoryWords('hi', 'trushil'))
+    def isFHWord(self, word, username, tableName):
+        try:
+            execute = self.cur.execute("""select word from {} where user_id = %s and word = %s""".format(tableName),
+                                       (str(self.getUserId(username)), word)
+                                       )
+            return self.conn.fetchall()
+        except:
+            pass
+
+    def isFavouriteWord(self, word, username):
+        favouriteWord = bool(self.isFHWord(word=word, username=username, tableName='favourite_words'))
+        if favouriteWord is True:
+            return True
+        return False
+
+    def isHomeWord(self, word, username):
+        homeWord = bool(self.isFHWord(word=word, username=username, tableName='home_words'))
+        if homeWord is True:
+            return True
+        return False
