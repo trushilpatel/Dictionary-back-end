@@ -8,7 +8,6 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 # ------------------- AUTHENTICATION ----------------------------
 @app.route('/api/login')
 def login():
-    print('hello')
     return SE.authenticated()
 
 
@@ -71,18 +70,18 @@ def deleteHistoryWord(word):
     return SE.deleteHistoryWord(word=word)
 
 
-# ------------------- HISTORY ----------------------------
-@app.route('/api/add/history/<word>')
+# ------------------- HOME ----------------------------
+@app.route('/api/add/home/<word>')
 def addHomeWord(word):
     return SE.addHomeWord(word=word)
 
 
-@app.route('/api/get/history')
+@app.route('/api/get/home')
 def getHomeWords():
     return SE.getHomeWords()
 
 
-@app.route('/api/delete/history/<word>')
+@app.route('/api/delete/home/<word>')
 def deleteHomeWord(word):
     return SE.deleteHomeWord(word=word)
 

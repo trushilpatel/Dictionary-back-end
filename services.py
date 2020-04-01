@@ -10,7 +10,6 @@ from utils.postgres import PostGress
 from flask import request
 
 # commonly used objects
-print(getenv('PG_PASSWORD'))
 PG = PostGress(
     localhost=getenv('PG_LOCALHOST'),
     port=getenv('PG_PORT'),
