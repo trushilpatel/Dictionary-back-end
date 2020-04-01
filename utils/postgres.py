@@ -11,6 +11,8 @@ class PostGress:
             else:
                 self.conn = psycopg2.connect(host=localhost, port=port, database=database, user=user, password=password)
         except:
+            print("error during connecting to the database")
+        finally:
             self.cur = self.conn.cursor()
             print("connected to Database...")
 
