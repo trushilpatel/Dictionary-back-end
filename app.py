@@ -39,30 +39,30 @@ def translateWord(word):
 
 @app.route('/api/add/favourite/<word>')
 def addFavouriteWord(word):
-    SE.addFavouriteWord(word=word)
+    return SE.addFavouriteWord(word=word)
 
 
 @app.route('/api/add/history/<word>')
 def addHistoryWord(word):
-    SE.addHistoryWord(word=word)
+    return SE.addHistoryWord(word=word)
 
 
 @app.route('/api/delete/favourite/<word>')
 def deleteFavouriteWord(word):
-    SE.deleteFavouriteWord(word=word)
+    return SE.deleteFavouriteWord(word=word)
 
 
 @app.route('/api/delete/history/<word>')
 def deleteHistoryWord(word):
-    SE.deleteHistoryWord(word=word)
+    return SE.deleteHistoryWord(word=word)
 
 
-@app.route('/api/get/history_words')
+@app.route('/api/get/history')
 def getHistoryWords():
     return SE.getHistoryWords()
 
 
-@app.route('/api/get/favourite_words')
+@app.route('/api/get/favourite')
 def getFavouriteWords():
     return SE.getFavouriteWords()
 
