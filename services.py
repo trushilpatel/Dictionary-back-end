@@ -101,7 +101,7 @@ def getHistoryWords():
 
 
 def deleteHistoryWord(word):
-    PG.deleteHistoryWords(username=request.headers['username'], word=word)
+    PG.deleteHistoryWord(username=request.headers['username'], word=word)
     return {"status": "successful"}
 
 
@@ -121,7 +121,7 @@ def getFavouriteWords():
 
 
 def deleteFavouriteWord(word):
-    PG.deleteFavouriteWords(username=request.headers['username'], word=word)
+    PG.deleteFavouriteWord(username=request.headers['username'], word=word)
     return {"status": "successful"}
 
 
@@ -141,5 +141,5 @@ def getHomeWords():
 
 
 def deleteHomeWord(word):
-    PG.deleteHoemWords(username=request.headers['username'], word=word)
+    PG.deleteHomeWord(username=request.headers['username'], word=word)
     return {"status": "successful"}

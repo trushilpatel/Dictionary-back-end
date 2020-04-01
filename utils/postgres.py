@@ -89,8 +89,8 @@ class PostGress:
         self.insertWord(word=word, username=username, tableName='favourite_words')
     def insertHistoryWord(self, word, username):
         self.insertWord(word=word, username=username, tableName='history_words')
-    def insertHomeWords(self, username):
-        return self.getWords(username=username, tableName='home_words')
+    def insertHomeWord(self, word, username):
+        return self.insertWord(word=word, username=username, tableName='home_words')
 
     # get favourite and history words
     def getWords(self, username, tableName):
@@ -109,7 +109,7 @@ class PostGress:
         return self.getWords(username=username, tableName='home_words')
 
     # delete favourite and History Words
-    def deleteWords(self, word, username, tableName):
+    def deleteWord(self, word, username, tableName):
         try:
             execute = self.cur.execute("""delete from {} where user_id = %s and word = %s""".format(tableName),
                                        (str(self.getUserId(username)), word)
@@ -117,12 +117,12 @@ class PostGress:
             self.conn.commit()
         except:
             pass
-    def deleteHistoryWords(self, word, username):
-        return self.deleteWords(word=word, username=username, tableName='history_words')
-    def deleteFavouriteWords(self, word, username):
-        return self.deleteWords(word=word, username=username, tableName='favourite_words')
-    def deleteHomeWords(self, username):
-        return self.getWords(username=username, tableName='home_words')
+    def deleteHistoryWord(self, word, username):
+        return self.deleteWord(word=word, username=username, tableName='history_words')
+    def deleteFavouriteWord(self, word, username):
+        return self.deleteWord(word=word, username=username, tableName='favourite_words')
+    def deleteHomeWord(self,word, username):
+        return self.deleteWord(word=word,username=username, tableName='home_words')
 
 
 if __name__ == "__main__":
