@@ -82,6 +82,7 @@ def getHomeWords():
     return SE.getHomeWords()
 
 
+
 @app.route('/api/delete/home/<word>')
 def deleteHomeWord(word):
     return SE.deleteHomeWord(word=word)
