@@ -5,6 +5,7 @@ import services as SE
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+
 # ------------------- AUTHENTICATION ----------------------------
 @app.route('/api/login')
 def login():
@@ -80,7 +81,7 @@ def addHomeWord(word):
 def getHomeWords():
     return SE.getHomeWords()
 
-q
+
 @app.route('/api/delete/home/<word>')
 def deleteHomeWord(word):
     return SE.deleteHomeWord(word=word)
