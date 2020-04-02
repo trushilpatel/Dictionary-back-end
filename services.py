@@ -17,6 +17,7 @@ PG = PostGress(
     user=getenv('PG_USER'),
     password=getenv('PG_PASSWORD')
 )
+MW = MerriamWebster(mwl_api_key=getenv("MWL_API_KEY"), mwd_api_key=getenv("MWD_API_KEY"))
 GD = GoogleDictionary()
 OX = Oxford(
     app_id=getenv('OX_APP_ID'),

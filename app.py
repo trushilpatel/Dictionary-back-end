@@ -80,7 +80,7 @@ def addHomeWord(word):
 def getHomeWords():
     return SE.getHomeWords()
 
-
+q
 @app.route('/api/delete/home/<word>')
 def deleteHomeWord(word):
     return SE.deleteHomeWord(word=word)
