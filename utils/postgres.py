@@ -40,12 +40,12 @@ class PostGress:
         }
 
     def getUserId(self, username):
-        execute = self.cur.execute("""select id from users where users.username = %s""", (username,))
+        self.cur.execute("""select id from users where users.username = %s""", (username,))
         return self.cur.fetchall()[0][0]
 
     # check word existence
     def checkWordExistInDictionary(self, word, dictionary):
-        execute = self.cur.execute("""select * from {} where word = %s""".format(dictionary), (word,))
+        self.cur.execute("""select * from {} where word = %s""".format(dictionary), (word,))
         return self.cur.fetchall()
 
     def getWordFromOxfordDictionary(self, word):
@@ -63,11 +63,12 @@ class PostGress:
     # insert word and definition
     def insertWordInDictionary(self, word, word_definition, dictionary):
         try:
-            execute = self.cur.execute("""insert into {} (word, definition) values (%s, %s)""".format(dictionary),
-                                       (word, json.dumps(word_definition))
-                                       )
+            self.cur.execute("""insert into {} (word, definition) values (%s, %s)""".format(dictionary),
+                             (word, json.dumps(word_definition))
+                             )
             self.conn.commit()
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     def insertWordInMWLDictionary(self, word, wordDefinition):
@@ -87,10 +88,11 @@ class PostGress:
     # insert word into favourite or history
     def insertWord(self, word, username, tableName):
         try:
-            execute = self.cur.execute("""insert into {} (user_id, word) values (%s, %s)""".format(tableName),
-                                       (str(self.getUserId(username)), word))
+            self.cur.execute("""insert into {} (user_id, word) values (%s, %s)""".format(tableName),
+                             (str(self.getUserId(username)), word))
             self.conn.commit()
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     def insertFavouriteWord(self, word, username):
@@ -105,11 +107,12 @@ class PostGress:
     # get favourite and history words
     def getWords(self, username, tableName):
         try:
-            execute = self.cur.execute("""select word from {} where user_id = %s""".format(tableName),
-                                       (str(self.getUserId(username)),)
-                                       )
+            self.cur.execute("""select word from {} where user_id = %s""".format(tableName),
+                             (str(self.getUserId(username)),)
+                             )
             return self.cur.fetchall()
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     def getHistoryWords(self, username):
@@ -124,11 +127,12 @@ class PostGress:
     # delete favourite and History Words
     def deleteWord(self, word, username, tableName):
         try:
-            execute = self.cur.execute("""delete from {} where user_id = %s and word = %s""".format(tableName),
-                                       (str(self.getUserId(username)), word)
-                                       )
+            self.cur.execute("""delete from {} where user_id = %s and word = %s""".format(tableName),
+                             (str(self.getUserId(username)), word)
+                             )
             self.conn.commit()
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     def deleteHistoryWord(self, word, username):
@@ -142,11 +146,12 @@ class PostGress:
 
     def isFHWord(self, word, username, tableName):
         try:
-            execute = self.cur.execute("""select word from {} where user_id = %s and word = %s""".format(tableName),
-                                       (str(self.getUserId(username)), word)
-                                       )
+            self.cur.execute("""select word from {} where user_id = %s and word = %s""".format(tableName),
+                             (str(self.getUserId(username)), word)
+                             )
             return self.cur.fetchall()
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     def isFavouriteWord(self, word, username):
