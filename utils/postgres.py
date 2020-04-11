@@ -46,7 +46,8 @@ class PostGress:
     # check word existence
     def checkWordExistInDictionary(self, word, dictionary):
         self.cur.execute("""select * from {} where word = %s""".format(dictionary), (word,))
-        return self.cur.fetchall()
+        ans = self.cur.fetchall()
+        return ans
 
     def getWordFromOxfordDictionary(self, word):
         word = self.checkWordExistInDictionary(word=word, dictionary='oxford_words')
@@ -110,7 +111,8 @@ class PostGress:
             self.cur.execute("""select word from {} where user_id = %s""".format(tableName),
                              (str(self.getUserId(username)),)
                              )
-            return self.cur.fetchall()
+            ans =  self.cur.fetchall()
+            return ans
         except Exception as e:
             print(e)
             pass
@@ -149,7 +151,9 @@ class PostGress:
             self.cur.execute("""select word from {} where user_id = %s and word = %s""".format(tableName),
                              (str(self.getUserId(username)), word)
                              )
-            return self.cur.fetchall()
+            ans = self.cur.fetchall()
+            return ans
+
         except Exception as e:
             print(e)
             pass
