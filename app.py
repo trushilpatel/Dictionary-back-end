@@ -91,8 +91,8 @@ def deleteHomeWord(word):
 # ------------------- ERROR ----------------------------
 @app.errorhandler(404)
 def notFount(error):
-    return error
-    # return "We will come back soon..."
+    return "We will come back soon..."
+    # return error
 
 
 if __name__ == "__main__":
